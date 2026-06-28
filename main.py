@@ -117,7 +117,7 @@ TAB_META = {
 }
 
 # ── Three-column workspace layout ────────────────────────────
-col_activity, col_sidebar, col_editor = st.columns([1, 4, 14], gap="none")
+col_activity, col_sidebar, col_editor = st.columns([1, 4, 14], gap="small")
 
 # ─── Activity Bar ─────────────────────────────────────────────
 with col_activity:
