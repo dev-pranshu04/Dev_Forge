@@ -1,0 +1,27 @@
+{
+  "id": "cardiorisk",
+  "title": "CardioRisk AI",
+  "subtitle": "Cardiovascular Risk Prediction System",
+  "status": "production",
+  "github": "https://github.com/dev-pranshu04/cardiorisk-ai",
+  "live_demo": null,
+  "year": "2024",
+  "overview": "An ensemble clinical-risk classifier combining XGBoost and Logistic Regression on a 920-patient UCI Heart Disease dataset. Deployed as a physician-facing Streamlit dashboard with real-time risk scoring and explainable AI breakdowns.",
+  "problem": "Cardiovascular disease is the leading cause of death globally. Early risk identification is effective but depends on physician availability and consistent application of clinical criteria — both scarce in overburdened healthcare systems.",
+  "solution": "An ML ensemble that ingests 13 clinical features (age, cholesterol, blood pressure, ECG results, etc.), produces a calibrated risk score with confidence intervals, and explains which features drove the prediction using SHAP values.",
+  "architecture": "UCI dataset preprocessing → feature engineering → XGBoost + Logistic Regression ensemble → 5-fold cross-validation → SHAP explainability layer → Streamlit dashboard with real-time input and risk output",
+  "tech": ["Python", "XGBoost", "Logistic Regression", "Scikit-learn", "SHAP", "Streamlit", "Plotly"],
+  "features": [
+    "Real-time risk scoring from 13 clinical inputs",
+    "SHAP-based feature importance breakdown per prediction",
+    "Model diagnostics: ROC curve, confusion matrix, calibration plot",
+    "5-fold cross-validation results display",
+    "Physician-readable risk explanation in plain language"
+  ],
+  "challenges": "Class imbalance in the UCI dataset skewed naive models toward false negatives — dangerous in a clinical context. Addressed via stratified k-fold and threshold tuning to prioritise recall over precision. Calibration was critical: a model that outputs 0.9 risk should actually be right ~90% of the time.",
+  "results": "AUC-ROC 0.905 validated via 5-fold cross-validation confirming generalisation across patient cohorts.",
+  "lessons": "In clinical ML, a wrong prediction is not just an error — it has consequences. This project taught me to think about error types asymmetrically. False negatives (missed risk) are far more costly than false positives.",
+  "future": "Extend to multi-disease risk scoring. Add longitudinal tracking so risk scores can be monitored over time rather than as one-off assessments.",
+  "related_skills": ["Python", "XGBoost", "Scikit-learn", "SHAP", "Streamlit"],
+  "related_research": "published"
+}

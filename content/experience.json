@@ -1,0 +1,115 @@
+[
+  {
+    "id": "autotech",
+    "org": "Autotech Asia",
+    "role": "Web Developer & AI Content Strategist",
+    "type": "internship",
+    "start": "July 2025",
+    "end": "December 2025",
+    "duration": "6 months",
+    "location": "India",
+    "org_url": "",
+    "bullets": [
+      "Developed and delivered frontend code for responsive, cross-browser compatible web interfaces",
+      "Built AI-powered content automation workflows reducing manual publishing effort significantly",
+      "Designed social media creatives aligned with brand identity across digital platforms",
+      "Provided end-to-end digital asset support for an EV Exhibition including content and creatives"
+    ],
+    "tech": ["HTML", "CSS", "JavaScript", "AI Automation"],
+    "highlight": null
+  },
+  {
+    "id": "nsut_lab",
+    "org": "NSUT Computational Chemistry Lab",
+    "role": "Machine Learning Researcher",
+    "type": "research",
+    "start": "May 2025",
+    "end": "August 2025",
+    "duration": "4 months",
+    "location": "Delhi, India",
+    "org_url": "",
+    "bullets": [
+      "Built physics-informed XGBoost + SVM + Neural Network ensemble for Au/Ag nanocluster stability prediction achieving 85%+ accuracy and 0.912 ROC-AUC on 11 DFT-derived features across 200 samples",
+      "Curated 200-sample literature-derived nanocluster dataset; identified HOMO-LUMO gap (25.7%) and formation energy (23.0%) as dominant stability predictors via interpretable ML",
+      "Reviewed ML-in-nanomaterials literature (Manna 2023, Häkkinen 2008, Taylor & Mpourmpakis 2017) to directly inform feature selection and model architecture",
+      "Deployed real-time stability prediction web app on Streamlit with interactive dataset dashboard and model interpretability visualisations"
+    ],
+    "tech": ["Python", "XGBoost", "SVM", "PyTorch", "Streamlit", "SHAP"],
+    "highlight": "0.912 ROC-AUC"
+  },
+  {
+    "id": "edufabrica",
+    "org": "Ethical Edufabrica Pvt. Ltd",
+    "role": "Machine Learning Intern",
+    "type": "internship",
+    "start": "June 2024",
+    "end": "July 2024",
+    "duration": "2 months",
+    "location": "India",
+    "org_url": "",
+    "bullets": [
+      "Built a Student Performance Prediction model using Random Forest & XGBoost achieving ~85% classification accuracy on the UCI Student Performance dataset",
+      "Compared 3 ML algorithms (Logistic Regression, Random Forest, XGBoost) and documented performance trade-offs across precision, recall, and F1-score",
+      "Deployed the model as an interactive Streamlit web app enabling real-time student risk assessment"
+    ],
+    "tech": ["Python", "Scikit-learn", "XGBoost", "Random Forest", "Streamlit"],
+    "highlight": "85% accuracy"
+  },
+  {
+    "id": "elokey",
+    "org": "Elokey",
+    "role": "User Interface Engineer",
+    "type": "internship",
+    "start": "June 2024",
+    "end": "June 2024",
+    "duration": "1 month",
+    "location": "India",
+    "org_url": "https://play.google.com/store/apps/details?id=com.qwezey.elokey0",
+    "bullets": [
+      "Designed a social + commerce hybrid profile combining posts, brand affiliations, and member codes for a blockchain-based authenticated items platform",
+      "Translated complex blockchain ownership provenance into a skimmable timeline-style UI reducing cognitive load for multi-step buy/sell history",
+      "Built a dark-mode design system from scratch establishing color tokens, typography, icon usage, and card variants used consistently across all screens",
+      "Delivered production-ready developer-handoff mockups at 390×844px (iPhone 14 spec) with precise spacing and auto-layout grids"
+    ],
+    "tech": ["Figma", "Design Systems", "Mobile UI", "Dark Mode"],
+    "highlight": "Production shipped on Play Store"
+  },
+  {
+    "id": "nordek",
+    "org": "NORDEK",
+    "role": "Machine Learning Intern",
+    "type": "internship",
+    "start": "June 2023",
+    "end": "August 2023",
+    "duration": "3 months",
+    "location": "United Arab Emirates (Remote)",
+    "org_url": "",
+    "bullets": [
+      "Designed and deployed the company's first ML-powered crypto trend-prediction system from scratch, replacing manual analysis with an ensemble XGBoost pipeline on 18 engineered on-chain and market features",
+      "Improved directional accuracy from 55% to 88% and reduced MAE by 40.7% versus prior naive baseline",
+      "Delivered a production Streamlit dashboard and 30-day auto-regressive forecast pipeline with volatility-based confidence bands",
+      "Collaborated cross-functionally within a 7-person development team translating raw market data into digestible summaries"
+    ],
+    "tech": ["Python", "XGBoost", "Pandas", "Streamlit", "Feature Engineering"],
+    "highlight": "55% → 88% accuracy"
+  },
+  {
+    "id": "finjoy",
+    "org": "FinjoyOfficial",
+    "role": "User Interface Designer",
+    "type": "internship",
+    "start": "July 2023",
+    "end": "July 2023",
+    "duration": "1 month",
+    "location": "New Delhi, India",
+    "org_url": "",
+    "bullets": [
+      "Designed a comprehensive multi-module fintech app UI covering 3 core tabs — Financial, E-Commerce, and Wallet — ensuring visual consistency across all screens",
+      "Built complete screen flows including home dashboard, product listings, wallet & card management, transaction history, and credit score checker",
+      "Designed intuitive card management interface with live balances, VISA card details, and quick-action buttons",
+      "Created financial products discovery flow featuring offer boxes, referral programs, and bank partnerships"
+    ],
+    "tech": ["Figma", "Fintech UI", "Mobile Design"],
+    "highlight": null
+  }
+]

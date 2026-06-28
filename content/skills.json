@@ -1,0 +1,126 @@
+{
+  "categories": [
+    {
+      "id": "ml_ai",
+      "label": "ML & AI",
+      "color": "#4FC3F7",
+      "skills": [
+        {
+          "id": "python",
+          "name": "Python",
+          "proficiency": "Advanced",
+          "since": "2021",
+          "last_used": "active",
+          "currently_learning": false,
+          "projects": ["resumeiq", "cardiorisk", "nanocluster", "nordek"],
+          "experience": ["nsut_lab", "edufabrica", "nordek"],
+          "research": ["published", "in_progress"],
+          "github_search": "https://github.com/dev-pranshu04?tab=repositories&q=&language=python"
+        },
+        {
+          "id": "xgboost",
+          "name": "XGBoost",
+          "proficiency": "Advanced",
+          "since": "2023",
+          "last_used": "active",
+          "currently_learning": false,
+          "projects": ["cardiorisk", "nanocluster", "nordek"],
+          "experience": ["nsut_lab", "edufabrica", "nordek"],
+          "research": ["published"],
+          "github_search": ""
+        },
+        {
+          "id": "pytorch",
+          "name": "PyTorch",
+          "proficiency": "Proficient",
+          "since": "2024",
+          "last_used": "active",
+          "currently_learning": true,
+          "projects": ["nanocluster"],
+          "experience": ["nsut_lab"],
+          "research": [],
+          "github_search": ""
+        },
+        {
+          "id": "langchain",
+          "name": "LangChain",
+          "proficiency": "Proficient",
+          "since": "2024",
+          "last_used": "active",
+          "currently_learning": false,
+          "projects": ["resumeiq"],
+          "experience": [],
+          "research": ["in_progress"],
+          "github_search": ""
+        },
+        {
+          "id": "sentence_transformers",
+          "name": "SentenceTransformers",
+          "proficiency": "Proficient",
+          "since": "2024",
+          "last_used": "active",
+          "currently_learning": false,
+          "projects": ["resumeiq"],
+          "experience": [],
+          "research": ["in_progress"],
+          "github_search": ""
+        },
+        {
+          "id": "groq",
+          "name": "Groq API",
+          "proficiency": "Proficient",
+          "since": "2024",
+          "last_used": "active",
+          "currently_learning": false,
+          "projects": ["resumeiq"],
+          "experience": [],
+          "research": [],
+          "github_search": ""
+        },
+        {
+          "id": "streamlit",
+          "name": "Streamlit",
+          "proficiency": "Advanced",
+          "since": "2023",
+          "last_used": "active",
+          "currently_learning": false,
+          "projects": ["resumeiq", "cardiorisk", "nanocluster", "nordek"],
+          "experience": ["nsut_lab", "edufabrica", "nordek"],
+          "research": [],
+          "github_search": ""
+        }
+      ]
+    },
+    {
+      "id": "design",
+      "label": "Design & HCI",
+      "color": "#CE93D8",
+      "skills": [
+        {
+          "id": "figma",
+          "name": "Figma",
+          "proficiency": "Advanced",
+          "since": "2023",
+          "last_used": "active",
+          "currently_learning": false,
+          "projects": [],
+          "experience": ["elokey", "finjoy"],
+          "research": ["under_review"],
+          "github_search": ""
+        },
+        {
+          "id": "hci",
+          "name": "HCI & Usability",
+          "proficiency": "Proficient",
+          "since": "2023",
+          "last_used": "active",
+          "currently_learning": true,
+          "projects": [],
+          "experience": ["elokey"],
+          "research": ["under_review"],
+          "github_search": ""
+        }
+      ]
+    }
+  ]
+}

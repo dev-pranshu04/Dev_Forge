@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ares",
+    "title": "ML System Design Lead",
+    "org": "ARES Society, NSUT",
+    "start": "January 2024",
+    "end": "November 2025",
+    "type": "leadership",
+    "description": "Led ML system design, predictive modelling, and technical roadmap for 3 aerospace research initiatives. Mentored 6 junior members on model development workflows.",
+    "impact": "3 aerospace research initiatives · 6 members mentored"
+  },
+  {
+    "id": "rotaract",
+    "title": "Event and Operations Lead",
+    "org": "Rotaract Society, NSUT",
+    "start": "January 2024",
+    "end": "December 2025",
+    "type": "leadership",
+    "description": "Planned and executed 17 student events across 4 departments, coordinating a 25-member volunteer team and reaching 500+ participants.",
+    "impact": "17 events · 25 volunteers · 500+ participants"
+  },
+  {
+    "id": "cert_iot",
+    "title": "Internet of Things",
+    "org": "Certification",
+    "type": "certification",
+    "description": null,
+    "impact": null
+  },
+  {
+    "id": "cert_figma",
+    "title": "Introduction to Figma and UI/UX Design",
+    "org": "Certification",
+    "type": "certification",
+    "description": null,
+    "impact": null
+  },
+  {
+    "id": "cert_ai_agents",
+    "title": "Unleashing the Power of AI Agents",
+    "org": "Certification",
+    "type": "certification",
+    "description": null,
+    "impact": null
+  },
+  {
+    "id": "cert_mit_ml",
+    "title": "Machine Learning for Healthcare",
+    "org": "MIT",
+    "type": "certification",
+    "description": null,
+    "impact": null
+  },
+  {
+    "id": "cert_building_ai",
+    "title": "Building with Artificial Intelligence",
+    "org": "Certification",
+    "type": "certification",
+    "description": null,
+    "impact": null
+  }
+]

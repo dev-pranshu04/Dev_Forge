@@ -1,0 +1,18 @@
+{
+  "name": "Pranshu Kumar",
+  "title": "ML & AI Engineer",
+  "university": "NSUT, Delhi",
+  "graduating": "May 2026",
+  "available_from": "July 2026",
+  "open_to_work": true,
+  "location": "Dwarka, Delhi, India",
+  "email": "dev.pranshu04@gmail.com",
+  "github": "https://github.com/dev-pranshu04",
+  "linkedin": "https://linkedin.com/in/dev-pranshu",
+  "product_name": "Forge",
+  "tagline": "Turning raw data into decisions.",
+  "accent_color": "#4FC3F7",
+  "avatar_path": "assets/images/avatar.jpg",
+  "resume_path": "assets/resume.pdf",
+  "status_message": "Open to full-time roles from July 2026"
+}

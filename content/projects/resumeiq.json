@@ -1,0 +1,28 @@
+{
+  "id": "resumeiq",
+  "title": "ResumeIQ",
+  "subtitle": "ATS Resume Intelligence Platform",
+  "status": "production",
+  "github": "https://github.com/dev-pranshu04/resumeiq",
+  "live_demo": null,
+  "year": "2025",
+  "overview": "A full-stack resume analysis pipeline that scores candidate-JD fit across 8 dimensions by blending LLM structured reasoning with SentenceTransformer semantic similarity — producing a calibrated match score with lower hallucination risk than either signal alone.",
+  "problem": "Candidates applying to competitive roles have no objective way to understand how well their resume matches a job description. ATS systems reject good candidates silently. Feedback, when it exists, is generic.",
+  "solution": "A pipeline that reads both resume and JD, scores across 8 specific dimensions (keyword coverage, semantic similarity, bullet impact, seniority match, ATS parseability, and more), explains every score with root-cause reasoning, and suggests concrete rewrites.",
+  "architecture": "PDF parsing layer (pdfplumber) → dual scoring: 65% Groq/LLaMA-3.1-8B structured JSON + 35% SentenceTransformer cosine similarity over 300-token LangChain chunks → calibrated score aggregation → feature-specific feedback generation → Streamlit UI",
+  "tech": ["Python", "Groq API", "LLaMA-3.1-8B", "SentenceTransformers", "LangChain", "Streamlit", "Plotly", "pdfplumber", "GitHub Actions", "pytest"],
+  "features": [
+    "Radar chart diagnostics across 8 scoring dimensions",
+    "Root-cause fix plans for each weak dimension",
+    "STAR-method bullet rewrites using LLM",
+    "Dual-pane ATS parser simulation",
+    "Full resume rewrite generation",
+    ".docx export of rewritten resume"
+  ],
+  "challenges": "Hallucination risk was the core problem. Pure LLM scoring drifts unpredictably across resume styles. Solved by capping LLM at 65% weight and anchoring on deterministic SentenceTransformer similarity for the remainder. LLM JSON parsing failures required robust fallback parsing with pytest coverage.",
+  "results": "6 end-to-end features shipped. CI via GitHub Actions. Test suite covering parser, scorer, and LLM JSON-parsing edge cases.",
+  "lessons": "Hybrid scoring (LLM + deterministic) consistently outperforms either alone in reliability. Calibration matters as much as raw accuracy. Building the test suite first would have saved 30% of debugging time.",
+  "future": "Fine-tune a domain-specific scoring model on accepted/rejected resume pairs. Add industry-specific benchmark comparisons.",
+  "related_skills": ["Python", "LangChain", "Groq", "SentenceTransformers", "Streamlit"],
+  "related_research": "in_progress"
+}

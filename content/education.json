@@ -1,0 +1,30 @@
+[
+  {
+    "id": "nsut",
+    "institution": "Netaji Subhas University of Technology (NSUT)",
+    "degree": "Bachelor of Technology",
+    "field": "Computer Science and Engineering",
+    "specialisation": "Artificial Intelligence",
+    "start": "January 2022",
+    "end": "May 2026",
+    "location": "Delhi, India",
+    "status": "current",
+    "coursework": ["Machine Learning", "Deep Learning", "Natural Language Processing", "Computer Vision", "Data Structures and Algorithms", "Database Management Systems"],
+    "achievements": [],
+    "url": "https://nsut.ac.in"
+  },
+  {
+    "id": "ksk",
+    "institution": "KSK Academy Senior Secondary Public School",
+    "degree": "Class XII CBSE",
+    "field": "Science (PCM)",
+    "specialisation": null,
+    "start": "2007",
+    "end": "2021",
+    "location": "India",
+    "status": "completed",
+    "coursework": ["Physics", "Chemistry", "Mathematics"],
+    "achievements": ["94.8% — School Topper, All Subjects", "Class X: 84.8% — School Topper, Mathematics and Science"],
+    "url": null
+  }
+]
