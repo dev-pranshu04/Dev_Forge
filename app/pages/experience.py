@@ -1,53 +1,40 @@
-"""
-experience.py — Vertical timeline of all professional roles.
-"""
+"""experience.py — Fixed: no raw HTML, uses st.write for bullets."""
 import streamlit as st
 from app.services.content_loader import load_experience
 from app.utils import state_manager as sm
 
-TYPE_ICON = {"research": "🔬", "internship": "💼", "design": "🎨"}
-TYPE_COLOR = {"research": "var(--purple)", "internship": "var(--accent)", "design": "var(--orange)"}
+TYPE_COLOR = {"research":"var(--purple)","internship":"var(--accent)"}
+TYPE_ICON  = {"research":"🔬","internship":"💼"}
 
 
 def render():
     experience = load_experience()
-
     st.markdown('<div class="forge-editor-canvas">', unsafe_allow_html=True)
+    st.markdown('<div class="forge-comment">// 3 years · 6 roles · ML research · UI design · AI engineering</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="forge-comment">// 3 years of hands-on experience · 6 roles · ML research · UI design · AI engineering</div>
-    """, unsafe_allow_html=True)
-
-    # ── Filter tabs ─────────────────────────────────────────
-    col_all, col_ml, col_design = st.columns(3)
+    # Filter
     if "exp_filter" not in st.session_state:
         st.session_state.exp_filter = "all"
-
-    with col_all:
-        if st.button("All Roles", key="exp_all", use_container_width=True):
-            st.session_state.exp_filter = "all"
-    with col_ml:
-        if st.button("ML / Research", key="exp_ml", use_container_width=True):
-            st.session_state.exp_filter = "research"
-    with col_design:
-        if st.button("Design / Dev", key="exp_design", use_container_width=True):
-            st.session_state.exp_filter = "design"
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        if st.button("All Roles", key="ef_all", use_container_width=True,
+                     type="primary" if st.session_state.exp_filter=="all" else "secondary"):
+            st.session_state.exp_filter = "all"; st.rerun()
+    with c2:
+        if st.button("ML / Research", key="ef_ml", use_container_width=True,
+                     type="primary" if st.session_state.exp_filter=="research" else "secondary"):
+            st.session_state.exp_filter = "research"; st.rerun()
+    with c3:
+        if st.button("Design / Dev", key="ef_design", use_container_width=True,
+                     type="primary" if st.session_state.exp_filter=="internship" else "secondary"):
+            st.session_state.exp_filter = "internship"; st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Timeline ─────────────────────────────────────────────
-    st.markdown('<div class="timeline">', unsafe_allow_html=True)
-
-    filter_val = st.session_state.exp_filter
-    design_types = {"internship"}  # broad catch-all for non-research
-
     for entry in experience:
         etype = entry.get("type", "internship")
-
-        # Filter logic
-        if filter_val == "research" and etype != "research":
-            continue
-        if filter_val == "design" and etype not in design_types:
+        filt  = st.session_state.exp_filter
+        if filt != "all" and etype != filt:
             continue
 
         org      = entry.get("org", "")
@@ -58,57 +45,62 @@ def render():
         location = entry.get("location", "")
         bullets  = entry.get("bullets", [])
         tech     = entry.get("tech", [])
-        highlight= entry.get("highlight")
+        highlight= entry.get("highlight", "")
         org_url  = entry.get("org_url", "")
-        icon     = TYPE_ICON.get(etype, "💼")
         color    = TYPE_COLOR.get(etype, "var(--accent)")
+        icon     = TYPE_ICON.get(etype, "💼")
 
-        # Build bullet HTML
-        bullets_html = "".join(f"<li>{b}</li>" for b in bullets)
-        tech_html    = "".join(
-            f'<span class="tech-tag">{t}</span>' for t in tech
-        )
-        hl_html = f'<span class="highlight-chip">{highlight}</span>' if highlight else ""
-        org_html = f'<a href="{org_url}" target="_blank" style="color:{color};text-decoration:none">{org}</a>' if org_url else f'<span style="color:{color}">{org}</span>'
+        # Card header
+        org_link = f'<a href="{org_url}" target="_blank" style="color:{color};text-decoration:none">{icon} {org}</a>' if org_url else f'<span style="color:{color}">{icon} {org}</span>'
+        hl_html  = f'<span class="highlight-chip" style="margin-left:8px">{highlight}</span>' if highlight else ""
 
         st.markdown(f"""
-        <div style="position:relative;margin-bottom:8px">
-          <div class="timeline-node" style="border-color:{color}"></div>
-          <div class="timeline-entry">
-            <div class="timeline-header">
-              <div>
-                <div class="timeline-org">{icon} {org_html}</div>
-                <div class="timeline-role">{role}</div>
-              </div>
-              <div class="timeline-meta">
-                {start} — {end}<br>
-                <span style="color:var(--text-2)">{duration}</span><br>
-                <span style="color:var(--text-2)">{location}</span>
-                {hl_html}
-              </div>
+        <div class="timeline-entry">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+            <div>
+              <div class="timeline-org">{org_link}</div>
+              <div class="timeline-role">{role}</div>
             </div>
-            <ul class="timeline-bullets">{bullets_html}</ul>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
-              {tech_html}
+            <div class="timeline-meta">
+              {start} — {end}<br>
+              <span style="color:var(--text-2)">{duration} · {location}</span><br>
+              {hl_html}
             </div>
           </div>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)  # close timeline
+        # Bullets — rendered SEPARATELY to avoid HTML escaping issue
+        with st.container():
+            for bullet in bullets:
+                st.markdown(
+                    f'<div style="font-family:var(--mono);font-size:12px;color:var(--text-1);'
+                    f'padding:3px 0 3px 24px;line-height:1.7;position:relative;">'
+                    f'<span style="position:absolute;left:8px;color:var(--accent)">▸</span>'
+                    f'{bullet}</div>',
+                    unsafe_allow_html=True
+                )
 
-    # ── Cross-links ──────────────────────────────────────────
+        # Tech tags
+        if tech:
+            tags = " ".join(f'<span class="tech-tag">{t}</span>' for t in tech)
+            st.markdown(
+                f'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;'
+                f'margin-bottom:8px;padding:0 0 12px 0;border-bottom:1px solid var(--border)">'
+                f'{tags}</div>',
+                unsafe_allow_html=True
+            )
+
+    # Cross-links
     st.markdown('<div class="cross-link-bar"><span class="cross-link-label">Next →</span>', unsafe_allow_html=True)
     c1, c2, c3 = st.columns(3)
     with c1:
-        if st.button("🚀 Projects", key="exp_nav_proj", use_container_width=True):
+        if st.button("🚀 Projects", key="exp_proj", use_container_width=True):
             sm.navigate("projects"); st.rerun()
     with c2:
-        if st.button("🛠 Skills", key="exp_nav_skill", use_container_width=True):
+        if st.button("🛠 Skills", key="exp_skill", use_container_width=True):
             sm.navigate("skills"); st.rerun()
     with c3:
-        if st.button("🎓 Education", key="exp_nav_edu", use_container_width=True):
+        if st.button("🎓 Education", key="exp_edu", use_container_width=True):
             sm.navigate("education"); st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    st.markdown('</div>', unsafe_allow_html=True)  # close editor-canvas
+    st.markdown('</div></div>', unsafe_allow_html=True)
