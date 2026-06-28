@@ -33,7 +33,7 @@ def render():
     """, unsafe_allow_html=True)
 
     # ── Split layout: list | detail ──────────────────────────
-    col_list, col_detail = st.columns([2, 5], gap="none")
+    col_list, col_detail = st.columns([2, 5], gap="small")
 
     with col_list:
         st.markdown("""
@@ -165,3 +165,4 @@ def render():
         st.markdown('</div>', unsafe_allow_html=True)  # close project-detail
 
     st.markdown('</div>', unsafe_allow_html=True)  # close editor-canvas
+
