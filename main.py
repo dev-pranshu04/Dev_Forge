@@ -1,47 +1,39 @@
 """
-main.py — Forge entry point.
-Renders the shell (title bar, activity bar, explorer, tab bar, status bar)
-and routes to the active page inside the editor canvas.
+main.py — Forge. Rebuilt with st.sidebar for reliable layout.
+Works on desktop and mobile. No column hacks.
 """
 import time
 import streamlit as st
 from pathlib import Path
 
-# ── Page config (must be first) ─────────────────────────────
 st.set_page_config(
     page_title="Forge — Pranshu Kumar",
     page_icon="⚡",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
-# ── Load CSS ─────────────────────────────────────────────────
+# ── CSS ───────────────────────────────────────────────────────
 css_path = Path("app/styles/forge_theme.css")
 if css_path.exists():
     with open(css_path) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# ── Foundation imports ───────────────────────────────────────
 from app.utils import state_manager as sm
 from app.services.content_loader import load_config
 
-# ── Init session state ───────────────────────────────────────
 sm.init()
+cfg     = load_config()
+NAME    = cfg.get("name", "Pranshu Kumar")
+PRODUCT = cfg.get("product_name", "Forge")
 
-# ── Load config ──────────────────────────────────────────────
-cfg = load_config()
-NAME     = cfg.get("name", "Pranshu Kumar")
-PRODUCT  = cfg.get("product_name", "Forge")
-TITLE_STR = cfg.get("title", "ML & AI Engineer")
-ACCENT   = cfg.get("accent_color", "#4FC3F7")
-
-# ── Boot sequence (runs once per session) ────────────────────
+# ── Boot ──────────────────────────────────────────────────────
 if not st.session_state.boot_done:
     boot = st.empty()
     boot.markdown(f"""
     <div class="boot-overlay">
       <div class="boot-logo">{PRODUCT}</div>
-      <div class="boot-sub">{NAME} &nbsp;·&nbsp; {TITLE_STR}</div>
+      <div class="boot-sub">{NAME} · ML &amp; AI Engineer</div>
       <div class="boot-progress"><div class="boot-progress-bar"></div></div>
       <div class="boot-skip">Loading workspace…</div>
     </div>
@@ -51,263 +43,177 @@ if not st.session_state.boot_done:
     boot.empty()
     st.rerun()
 
-# ── Title Bar ────────────────────────────────────────────────
+# ── Title bar (fixed HTML) ────────────────────────────────────
 st.markdown(f"""
 <div class="forge-title-bar">
-  <div class="traffic-lights">
-    <div class="traffic-light tl-close"></div>
-    <div class="traffic-light tl-min"></div>
-    <div class="traffic-light tl-max"></div>
-    <span style="font-family:var(--mono);font-size:11px;color:var(--text-2);margin-left:8px">
-      {NAME} — {PRODUCT}
-    </span>
+  <div class="title-left">
+    <span class="tl-close"></span>
+    <span class="tl-min"></span>
+    <span class="tl-max"></span>
+    <span class="title-name">{NAME} — {PRODUCT}</span>
   </div>
-  <div class="title-text">{NAME} — {PRODUCT} — Visual Studio Code</div>
-  <div class="title-menu">
-    <span class="title-menu-item">File</span>
-    <span class="title-menu-item">Edit</span>
-    <span class="title-menu-item">View</span>
-    <span class="title-menu-item">Terminal</span>
-    <span class="title-menu-item">Help</span>
+  <div class="title-center">
+    {NAME} — {PRODUCT} — Visual Studio Code
+  </div>
+  <div class="title-right">
+    <span>File</span><span>Edit</span><span>View</span><span>Terminal</span>
   </div>
 </div>
+<div class="title-spacer"></div>
 """, unsafe_allow_html=True)
 
 # ── File tree data ────────────────────────────────────────────
-FILE_TREE = [
-    {"label": "▾ FORGE",           "key": None,            "type": "section", "indent": 0},
-    {"label": "▾ src",             "key": None,            "type": "folder",  "indent": 0},
-    {"label": "about.md",          "key": "about",         "type": "md",      "indent": 1},
-    {"label": "skills.json",       "key": "skills",        "type": "json",    "indent": 1},
-    {"label": "▾ projects",        "key": None,            "type": "folder",  "indent": 1},
-    {"label": "resumeiq.ts",       "key": "projects",      "type": "ts",      "indent": 2},
-    {"label": "cardiorisk.ts",     "key": "projects",      "type": "ts",      "indent": 2},
-    {"label": "nanocluster.ts",    "key": "projects",      "type": "ts",      "indent": 2},
-    {"label": "▾ research",        "key": None,            "type": "folder",  "indent": 1},
-    {"label": "published.md",      "key": "research",      "type": "md",      "indent": 2},
-    {"label": "under_review.md",   "key": "research",      "type": "md",      "indent": 2},
-    {"label": "in_progress.md",    "key": "research",      "type": "md",      "indent": 2},
-    {"label": "experience.md",     "key": "experience",    "type": "md",      "indent": 1},
-    {"label": "education.md",      "key": "education",     "type": "md",      "indent": 1},
-    {"label": "▾ playground",      "key": None,            "type": "folder",  "indent": 1},
-    {"label": "bug_hunter.ts",     "key": "playground",    "type": "ts",      "indent": 2},
-    {"label": "git_rescue.ts",     "key": "playground",    "type": "ts",      "indent": 2},
-    {"label": "ml_academy.ts",     "key": "playground",    "type": "ts",      "indent": 2},
-    {"label": "achievements.md",   "key": "achievements",  "type": "md",      "indent": 1},
-    {"label": "contact.tsx",       "key": "contact",       "type": "tsx",     "indent": 1},
-    {"label": "README.md",         "key": "readme",        "type": "md",      "indent": 1},
-    {"label": "resume.pdf",        "key": "resume",        "type": "pdf",     "indent": 1},
-]
-
-DOT_CLASS = {"ts": "dot-ts", "md": "dot-md", "tsx": "dot-tsx", "json": "dot-json", "pdf": "dot-pdf"}
-FILE_LANG  = {"ts": "TypeScript", "md": "Markdown", "tsx": "TSX", "json": "JSON", "pdf": "PDF"}
-
-# ── Tab metadata ──────────────────────────────────────────────
 TAB_META = {
-    "about":        {"label": "about.md",        "type": "md"},
-    "skills":       {"label": "skills.json",      "type": "json"},
-    "projects":     {"label": "projects/",        "type": "ts"},
-    "research":     {"label": "research/",        "type": "md"},
-    "experience":   {"label": "experience.md",    "type": "md"},
-    "education":    {"label": "education.md",     "type": "md"},
-    "playground":   {"label": "playground/",      "type": "ts"},
-    "achievements": {"label": "achievements.md",  "type": "md"},
-    "contact":      {"label": "contact.tsx",      "type": "tsx"},
-    "readme":       {"label": "README.md",        "type": "md"},
+    "about":        {"label": "about.md",        "dot": "dot-md",   "lang": "Markdown"},
+    "skills":       {"label": "skills.json",      "dot": "dot-json", "lang": "JSON"},
+    "projects":     {"label": "projects/",        "dot": "dot-ts",   "lang": "TypeScript"},
+    "research":     {"label": "research/",        "dot": "dot-md",   "lang": "Markdown"},
+    "experience":   {"label": "experience.md",    "dot": "dot-md",   "lang": "Markdown"},
+    "education":    {"label": "education.md",     "dot": "dot-md",   "lang": "Markdown"},
+    "playground":   {"label": "playground/",      "dot": "dot-ts",   "lang": "TypeScript"},
+    "achievements": {"label": "achievements.md",  "dot": "dot-md",   "lang": "Markdown"},
+    "contact":      {"label": "contact.tsx",      "dot": "dot-tsx",  "lang": "TSX"},
+    "readme":       {"label": "README.md",        "dot": "dot-md",   "lang": "Markdown"},
+    "resume":       {"label": "resume.pdf",       "dot": "dot-pdf",  "lang": "PDF"},
 }
 
-# ── Three-column workspace layout ────────────────────────────
-col_activity, col_sidebar, col_editor = st.columns([1, 4, 14], gap="small")
-
-# ─── Activity Bar ─────────────────────────────────────────────
-with col_activity:
-    st.markdown("""
-    <div class="forge-activity-bar">
-      <div class="activity-icon active" title="Explorer">⊞</div>
-      <div class="activity-icon" title="Search">⊘</div>
-      <div class="activity-icon" title="AI Assistant">✦</div>
-      <div class="activity-icon bottom" title="Settings">⚙</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-# ─── Explorer Sidebar ──────────────────────────────────────────
-with col_sidebar:
-    st.markdown('<div class="forge-sidebar">', unsafe_allow_html=True)
-    st.markdown('<div class="sidebar-section-title">Explorer</div>', unsafe_allow_html=True)
+# ── Sidebar (native Streamlit — works on mobile) ──────────────
+with st.sidebar:
+    st.markdown('<div class="sb-header">EXPLORER</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sb-section">▾ FORGE / src</div>', unsafe_allow_html=True)
 
     active = sm.get_active()
 
-    for item in FILE_TREE:
-        if item["type"] == "section":
-            st.markdown(f'<div class="sidebar-section-title" style="padding-top:8px">{item["label"]}</div>', unsafe_allow_html=True)
-            continue
-        if item["type"] == "folder":
-            indent_cls = f"indent-{item['indent']}" if item["indent"] else ""
-            st.markdown(f'<div class="file-tree-item folder {indent_cls}">{item["label"]}</div>', unsafe_allow_html=True)
-            continue
+    def nav_btn(label: str, key: str, dot: str, indent: int = 0):
+        is_a = key == active
+        pad  = indent * 14
+        cls  = "sb-item-active" if is_a else "sb-item"
+        st.markdown(
+            f'<div class="{cls}" style="padding-left:{pad+12}px">'
+            f'<span class="file-dot {dot}"></span>'
+            f'<span class="sb-label">{label}</span></div>',
+            unsafe_allow_html=True,
+        )
+        if st.button(label, key=f"nav_{key}", label_visibility="collapsed",
+                     use_container_width=True):
+            sm.navigate(key)
+            st.rerun()
 
-        # Clickable file items
-        dot  = DOT_CLASS.get(item["type"], "dot-md")
-        indent_cls = f"indent-{item['indent']}"
-        is_active  = (item["key"] == active)
-        active_cls = "active" if is_active else ""
+    nav_btn("about.md",       "about",        "dot-md",   0)
+    nav_btn("skills.json",    "skills",       "dot-json", 0)
 
-        if item["key"] == "resume":
-            st.markdown(
-                f'<div class="file-tree-item {indent_cls}">'
-                f'<span class="file-dot {dot}"></span>{item["label"]}</div>',
-                unsafe_allow_html=True
-            )
-        elif item["key"]:
-            if st.button(
-                f'{"  " * item["indent"]}· {item["label"]}',
-                key=f"nav_{item['label']}_{item['key']}",
-                use_container_width=True,
-                type="secondary",
-            ):
-                sm.navigate(item["key"])
-                st.rerun()
+    st.markdown('<div class="sb-folder" style="padding-left:12px">▾ projects</div>',
+                unsafe_allow_html=True)
+    nav_btn("resumeiq.ts",    "projects",     "dot-ts",   1)
+    nav_btn("cardiorisk.ts",  "projects",     "dot-ts",   1)
+    nav_btn("nanocluster.ts", "projects",     "dot-ts",   1)
 
-    # Sidebar footer
+    st.markdown('<div class="sb-folder" style="padding-left:12px">▾ research</div>',
+                unsafe_allow_html=True)
+    nav_btn("published.md",   "research",     "dot-md",   1)
+    nav_btn("under_review.md","research",     "dot-md",   1)
+    nav_btn("in_progress.md", "research",     "dot-md",   1)
+
+    nav_btn("experience.md",  "experience",   "dot-md",   0)
+    nav_btn("education.md",   "education",    "dot-md",   0)
+
+    st.markdown('<div class="sb-folder" style="padding-left:12px">▾ playground</div>',
+                unsafe_allow_html=True)
+    nav_btn("bug_hunter.ts",  "playground",   "dot-ts",   1)
+    nav_btn("git_rescue.ts",  "playground",   "dot-ts",   1)
+    nav_btn("ml_academy.ts",  "playground",   "dot-ts",   1)
+
+    nav_btn("achievements.md","achievements", "dot-md",   0)
+    nav_btn("contact.tsx",    "contact",      "dot-tsx",  0)
+    nav_btn("README.md",      "readme",       "dot-md",   0)
+    nav_btn("resume.pdf",     "resume",       "dot-pdf",  0)
+
     st.markdown("""
-    <div class="sidebar-footer">
+    <div class="sb-footer">
       <div class="avatar-pk">PK</div>
-      <div class="branch-info">✓ main — up to date</div>
+      <span class="sb-branch">✓ main — up to date</span>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
-# ─── Editor Area ───────────────────────────────────────────────
-with col_editor:
-    active      = sm.get_active()
-    open_tabs   = sm.get_tabs()
-    tab_info    = TAB_META.get(active, {"label": active, "type": "md"})
-    lang_label  = FILE_LANG.get(tab_info["type"], "Text")
-
-    # Tab bar
-    tab_html = '<div class="forge-tab-bar">'
-    for t in open_tabs:
-        meta  = TAB_META.get(t, {"label": t, "type": "md"})
-        dot   = DOT_CLASS.get(meta["type"], "dot-md")
-        is_a  = "active" if t == active else ""
-        tab_html += (
-            f'<div class="forge-tab {is_a}">'
-            f'<span class="file-dot tab-dot {dot}"></span>'
-            f'<span class="tab-name">{meta["label"]}</span>'
-            f'</div>'
-        )
-    tab_html += "</div>"
-    st.markdown(tab_html, unsafe_allow_html=True)
-
-    # Clickable tab buttons (real interactivity)
-    if len(open_tabs) > 1:
-        tab_cols = st.columns(len(open_tabs))
-        for i, t in enumerate(open_tabs):
-            with tab_cols[i]:
-                meta = TAB_META.get(t, {"label": t, "type": "md"})
-                if st.button(meta["label"], key=f"tab_{t}", use_container_width=True):
-                    sm.navigate(t)
-                    st.rerun()
-
-    # Breadcrumb
-    st.markdown(
-        f'<div class="forge-breadcrumb">'
-        f'<span class="breadcrumb-path">forge › <span>{tab_info["label"]}</span></span>'
-        f'<span class="breadcrumb-lang">{lang_label}</span>'
-        f'</div>',
-        unsafe_allow_html=True
-    )
-
-    # ── Route to active page ─────────────────────────────────
-    if active == "about":
-        from app.pages.about import render
-        render(cfg)
-    elif active == "experience":
-        from app.pages.experience import render
-        render()
-    elif active == "projects":
-        from app.pages.projects import render
-        render()
-    elif active == "research":
-        from app.pages.research import render
-        render()
-    elif active == "skills":
-        from app.pages.skills import render
-        render()
-    elif active == "playground":
-        from app.pages.playground import render
-        render()
-    elif active == "education":
-        from app.pages.education import render
-        render()
-    elif active == "achievements":
-        from app.pages.achievements import render
-        render()
-    elif active == "contact":
-        from app.pages.contact import render
-        render(cfg)
-    elif active == "readme":
-        from app.pages.readme import render
-        render(cfg)
-    elif active == "resume":
-        st.markdown("""
-        <div class="forge-editor-canvas">
-          <div class="forge-comment">// resume.pdf — download to view</div>
-          <div style="text-align:center;padding:60px 0">
-            <div style="font-family:var(--mono);font-size:48px;margin-bottom:16px">📄</div>
-            <div style="font-family:var(--mono);font-size:14px;color:var(--text-1);margin-bottom:24px">
-              Pranshu_Kumar_Resume.pdf
-            </div>
-          </div>
-        </div>
-        """, unsafe_allow_html=True)
-        resume_path = Path("assets/resume.pdf")
-        if resume_path.exists():
-            with open(resume_path, "rb") as f:
-                st.download_button(
-                    "⬇ Download Resume",
-                    f.read(),
-                    file_name="Pranshu_Kumar_Resume.pdf",
-                    mime="application/pdf",
-                )
-        else:
-            st.markdown(
-                '<p style="font-family:var(--mono);font-size:12px;color:var(--text-2);text-align:center">'
-                'Resume file not found. Place your PDF at assets/resume.pdf</p>',
-                unsafe_allow_html=True,
-            )
-    else:
-        sm.navigate("about")
-        st.rerun()
-
-# ── Status Bar ───────────────────────────────────────────────
+# ── Editor area ───────────────────────────────────────────────
 active    = sm.get_active()
-tab_info  = TAB_META.get(active, {"label": active, "type": "md"})
-lang      = FILE_LANG.get(tab_info["type"], "Text")
+open_tabs = sm.get_tabs()
+meta      = TAB_META.get(active, {"label": active, "dot": "dot-md", "lang": "Text"})
 
+# Tab bar — horizontal radio styled as tabs
+if open_tabs:
+    tab_labels = [TAB_META.get(t, {"label": t})["label"] for t in open_tabs]
+    active_idx = open_tabs.index(active) if active in open_tabs else 0
+    selected_label = st.radio(
+        "tabs", tab_labels,
+        index=active_idx,
+        horizontal=True,
+        label_visibility="collapsed",
+        key="tab_radio"
+    )
+    # Map label back to key
+    for t in open_tabs:
+        if TAB_META.get(t, {}).get("label") == selected_label and t != active:
+            sm.navigate(t)
+            st.rerun()
+
+# Breadcrumb
+st.markdown(
+    f'<div class="forge-breadcrumb">'
+    f'<span class="bc-path">forge › <span class="bc-active">{meta["label"]}</span></span>'
+    f'<span class="bc-lang">{meta["lang"]}</span>'
+    f'</div>',
+    unsafe_allow_html=True
+)
+
+# ── Route ────────────────────────────────────────────────────
+if active == "about":
+    from app.pages.about import render; render(cfg)
+elif active == "experience":
+    from app.pages.experience import render; render()
+elif active == "projects":
+    from app.pages.projects import render; render()
+elif active == "research":
+    from app.pages.research import render; render()
+elif active == "skills":
+    from app.pages.skills import render; render()
+elif active == "playground":
+    from app.pages.playground import render; render()
+elif active == "education":
+    from app.pages.education import render; render()
+elif active == "achievements":
+    from app.pages.achievements import render; render()
+elif active == "contact":
+    from app.pages.contact import render; render(cfg)
+elif active == "readme":
+    from app.pages.readme import render; render(cfg)
+elif active == "resume":
+    st.markdown('<div class="forge-editor-canvas" style="text-align:center;padding:60px 0">', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:48px">📄</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-family:var(--mono);color:var(--text-1);margin:12px 0 24px">resume.pdf</div>', unsafe_allow_html=True)
+    rp = Path("assets/resume.pdf")
+    if rp.exists():
+        with open(rp, "rb") as f:
+            st.download_button("⬇ Download Resume", f.read(), "Pranshu_Kumar_Resume.pdf", "application/pdf")
+    else:
+        st.markdown('<p style="font-family:var(--mono);font-size:12px;color:var(--text-2)">Place your PDF at assets/resume.pdf</p>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+else:
+    sm.navigate("about"); st.rerun()
+
+# ── Status bar ────────────────────────────────────────────────
+active = sm.get_active()
+lang   = TAB_META.get(active, {"lang": "Text"})["lang"]
 st.markdown(f"""
 <div class="forge-status-bar">
   <div class="status-left">
-    <span class="status-item">⎇ main</span>
-    <span class="status-item">✓ 0 errors, 0 warnings</span>
+    <span>⎇ main</span>
+    <span>✓ 0 errors</span>
   </div>
   <div class="status-right">
-    <span class="status-item">Ln 1, Col 1</span>
-    <span class="status-item">UTF-8</span>
-    <span class="status-item">{lang}</span>
-    <span class="status-item">Spaces: 2</span>
+    <span>Ln 1, Col 1</span>
+    <span>UTF-8</span>
+    <span>{lang}</span>
   </div>
 </div>
-""", unsafe_allow_html=True)
-
-# ── Command palette hint ─────────────────────────────────────
-st.markdown("""
-<style>
-div[data-testid="stVerticalBlock"] > div > div > div > div[data-testid="stButton"] button {
-  font-size: 11px !important;
-  padding: 2px 8px !important;
-  height: auto !important;
-  min-height: 0 !important;
-}
-</style>
 """, unsafe_allow_html=True)
